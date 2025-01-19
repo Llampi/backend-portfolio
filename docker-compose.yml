@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  django:
+    build:
+      context: ./django_app  
+    container_name: django-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django_app:/app
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=mydb
+      - DB_USER=user
+      - DB_PASSWORD=password
+
+  react:
+    build:
+      context: ./react_app/main 
+    container_name: react-app
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./react_app/main:/app
+      - node_modules:/app/node_modules
+    environment:
+      - VITE_API_URL=http://django:8000  # Configura la URL del backend Django para las llamadas API
+
+  db:
+    image: postgres:13
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data: {}
+  node_modules: {}

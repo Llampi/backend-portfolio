@@ -6,9 +6,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',  // URL de Django
+        target: 'http://django-app:8000',  // URL de Django
         changeOrigin: true,
         secure: false,
       },
