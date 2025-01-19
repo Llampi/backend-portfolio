@@ -120,6 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+django_app/env_django/
 activate_env.bat
 .env
 .venv
